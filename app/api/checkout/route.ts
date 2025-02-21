@@ -13,13 +13,13 @@ const corsHeaders={
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function POST(req:Request ,{params}:{params:{
+export async function POST(req:Request ,{params}:{params:Promise<{
     carId:string,
     priceDay:string,
     startDate:Date,
     endDate:Date,
     carName:string
-}}) {
+}>}) {
     const {userId} = await auth();
     const {carId,priceDay,startDate,endDate,carName}= await req.json();
 
