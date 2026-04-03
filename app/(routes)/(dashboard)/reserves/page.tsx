@@ -11,7 +11,7 @@ export default async function pageReserves() {
 
     const orders= await db.order.findMany({
         where:{userId:userId},
-        orderBy:{createAt:"desc"}
+        orderBy:{createdAt:"desc"}
     })
 
      

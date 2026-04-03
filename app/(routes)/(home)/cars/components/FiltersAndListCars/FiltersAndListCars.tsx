@@ -12,7 +12,10 @@ export  function FiltersAndListCars(props:FilterAndListCarsProps) {
         type:"",
         transmission:"",
         engine:"",
-        people:""
+        people:"",
+        priceMin:"",
+        priceMax:"",
+        cv:""
     })
 
     //para modificar el arreglo que se pasa por parametros a el componente de list car con los filtros deseados
@@ -29,6 +32,15 @@ export  function FiltersAndListCars(props:FilterAndListCarsProps) {
         }
         if(filters.people){
             filtered=filtered.filter((car)=>car.people.toLowerCase().includes(filters.people.toLowerCase()));
+        }
+        if(filters.priceMin){
+            filtered=filtered.filter((car)=> Number(car.priceDay) >= Number(filters.priceMin));
+        }
+        if(filters.priceMax){
+            filtered=filtered.filter((car)=> Number(car.priceDay) <= Number(filters.priceMax));
+        }
+        if(filters.cv){
+            filtered=filtered.filter((car)=> Number(car.cv) >= Number(filters.cv));
         }
 
         setFilteredCars(filtered);
@@ -48,13 +60,16 @@ export  function FiltersAndListCars(props:FilterAndListCarsProps) {
             type:"",
             transmission:"",
             engine:"",
-            people:""
+            people:"",
+            priceMin:"",
+            priceMax:"",
+            cv:""
         });
     };
 
 
   return (
-    <div>
+    <div className="max-w-[1200px] mx-auto px-6 mt-10">
         <FilterCars
         setFilters={ handleFiltersChange}
         clearFilters={clearFilters}

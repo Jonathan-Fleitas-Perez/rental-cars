@@ -9,7 +9,7 @@ export default async function pageReservesAdmin() {
     const user= await currentUser();
     if(!userId || !user || !isAdministrator(userId)) return redirect('/');
 
-    const orders = await db.order.findMany({orderBy:{createAt:"desc"}});
+    const orders = await db.order.findMany({orderBy:{createdAt:"desc"}});
   return (
     <div>
         <h2 className="text-3xl mb-4">Reserves Page</h2>

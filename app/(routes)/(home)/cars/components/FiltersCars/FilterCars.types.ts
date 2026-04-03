@@ -6,5 +6,8 @@ export type FilterCarsProps={
         transmission:string;
         engine:string;
         people:string;
+        priceMin:string;
+        priceMax:string;
+        cv:string;
     }
 };

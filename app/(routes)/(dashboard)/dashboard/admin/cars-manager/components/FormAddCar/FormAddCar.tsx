@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { formSchema } from "./FormAddCar.form";
+import { carFormSchema as formSchema } from "@/lib/car-form.schema";
 import {
   Select,
   SelectContent,
@@ -62,7 +62,6 @@ export function FormAddCar(props:FormAddCarProps) {
         title:"Something went wrong",
         variant:"destructive"
       })
-      console.log(error);
     }
   };
 
@@ -222,12 +221,11 @@ export function FormAddCar(props:FormAddCarProps) {
                     {...field}
                     endpoint="photo"
                     onClientUploadComplete={(res) => {
-                      console.log(res);
                       form.setValue("photo", res?.[0].url);
                       setPhotoUploaded(true);
                     }}
                     onUploadError={(error: Error) => {
-                      console.log(error+"aqui es");
+                      console.error("Upload error", error);
                     }}
                   />
                   )}

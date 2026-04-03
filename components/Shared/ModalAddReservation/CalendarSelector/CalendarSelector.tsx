@@ -40,8 +40,7 @@ export function CalendarSelector(props: CalendarSelectorProps) {
   const daysBetween =
     date?.from && date?.to ? calculateDaysBetween(date.from, date.to) : 0;
 
-    console.log(setDate)
-
+    // removed console.log
   return (
     <>
       <div className={cn("grid gap-2", className)}>

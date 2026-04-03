@@ -2,124 +2,92 @@
 import { Button } from "@/components/ui/button";
 import { CardCarProps } from "./CardCar.types";
 import { toast } from "@/hooks/use-toast";
-import { Fuel,Gauge,Gem,Trash,Upload,Users,Wrench } from "lucide-react";
-import Image from "next/image";
+import { Trash,Upload } from "lucide-react";
+import { CarCard } from "@/components/Shared/CarCard";
 import {useRouter} from "next/navigation"
 import { ButtonEditCar } from "./ButtonEditCar";
 import axios from "axios";
 
-export default function CardCar(props:CardCarProps) {
-    const {car}=props;
-    const router=useRouter();
+import { Badge } from "@/components/ui/badge";
 
-    const deleteCar=async()=>{
-      try {
-        await axios.delete(`/api/car/${car.id}`);
-        toast({title:"Car delete"})
-        router.refresh();
+export default function CardCar(props: CardCarProps) {
+  const { car } = props;
+  const router = useRouter();
 
-      } catch (error) {
-        toast({
-          title:"Something went wrong",
-          variant:"destructive"
-        })
-        console.log(error);
-      }
+  const deleteCar = async () => {
+    try {
+      await axios.delete(`/api/car/${car.id}`);
+      toast({ title: "Car deleted" });
+      router.refresh();
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        variant: "destructive",
+      });
+      console.log(error);
     }
+  };
 
-    const handlerPublishCar=async (publish:boolean)=>{
-      try {
-        await axios.patch(`/api/car/${car.id}`,{isPublish:publish})
-        if(publish)
-          toast({title:"Car Published"});
-        else
-          toast({title:"Car Unpublish"});
-
-        router.refresh();
-
-      } catch (error) {
-        toast({
-          title:"Something went wrong",
-          variant:"destructive"
-        })
-        console.log(error);
-      }
+  const handlerPublishCar = async (publish: boolean) => {
+    try {
+      await axios.patch(`/api/car/${car.id}`, { isPublish: publish });
+      toast({ title: publish ? "Car Published" : "Car Unpublished" });
+      router.refresh();
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        variant: "destructive",
+      });
+      console.log(error);
     }
-
+  };
 
   return (
-    <div className="relative p-1 bg-white rounded-lg shadow-md hover:shadow-lg">
-      {/*Propiedades del carro */}
-        <Image
-        src={car.photo}
-        alt={car.name}
-        width={400}
-        height={600}
-        objectFit="fit"
-        className="rounded-lg mt-2 aspect-[3/2]"
-        />
-        {car.isPublish?<p className="absolute top-0 right-0 w-full p-1 text-center text-white bg-green-700 rounded-t-lg">Published</p>:
-        <p className="absolute top-0 left-0 right-0 w-full p-1 text-center text-white bg-red-300 rounded-t-lg">Not Published</p>}
-
-        <div className="relative p-3">
-          <div className="flex flex-col mb-3 gap-x-4">
-            <p className="text-xl min-h-16 lg:min-h-fit">{car.name}</p>
-            <p>${car.priceDay} /dia</p>
+    <div className="relative group">
+      <CarCard 
+        car={car} 
+        className="h-full border-muted/40 hover:border-primary/50 transition-all duration-300"
+        badge={
+          <div className="absolute top-3 left-3 z-20">
+            <Badge variant={car.isPublish ? "success" : "destructive"}>
+              {car.isPublish ? "Published" : "Draft"}
+            </Badge>
           </div>
-
-          <div className="grid md:grid-cols-2 gap-x-4">
-            <p className="flex items-center"> 
-              <Gem className="h-4 w-4 mr-2" strokeWidth={1}/> 
-              {car.type}
-            </p>
-
-            <p className="flex items-center"> 
-              <Wrench className="h-4 w-4 mr-2" strokeWidth={1}/> 
-              {car.transmission}
-            </p>
-
-            <p className="flex items-center"> 
-              <Users className="h-4 w-4 mr-2" strokeWidth={1}/> 
-              {car.people}
-            </p>
-
-            <p className="flex items-center"> 
-              <Fuel className="h-4 w-4 mr-2" strokeWidth={1}/> 
-              {car.engine}
-            </p>
-
-            <p className="flex items-center"> 
-              <Gauge className="h-3.5 w-3.5 mr-2" strokeWidth={1}/> 
-              {car.cv} CV
-            </p>
-
-          </div>
-
-          {/*Botones de delete y editar */}
-          <div className="flex flex-col md:flex-row justify-between mt-3 gap-x-1 ">
-            <Button variant="outline" onClick={deleteCar}>
-              DELETE
-              <Trash className="w-3 h-3 ml-1"/>
+        }
+      >
+        <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-muted/40">
+          <div className="flex items-center justify-between gap-2">
+            <ButtonEditCar carData={car} />
+            <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={deleteCar}
+                className="text-destructive hover:bg-destructive/10 hover:text-destructive shrink-0"
+            >
+              <Trash className="w-4 h-4" />
             </Button>
-           
-           <ButtonEditCar carData={car}/> 
           </div>
 
-          {/*Boton de publicar */}
-          {car.isPublish?(
-          <Button className="w-full mt-3" variant="outline" onClick={()=>handlerPublishCar(false)}>
-            Unpublish
-            <Upload className="w-4 h-4 ml-2"/>
-            </Button> ):(
           <Button
-          className="w-full mt-3" onClick={()=>handlerPublishCar(true)}
+            className="w-full font-semibold"
+            variant={car.isPublish ? "outline" : "default"}
+            onClick={() => handlerPublishCar(!car.isPublish)}
           >
-            Publish
-            <Upload className="w-4 h-4 ml-2"/>
-            </Button>
-          )}
+            {car.isPublish ? (
+              <>
+                Unpublish
+                <Upload className="w-4 h-4 ml-2" />
+              </>
+            ) : (
+              <>
+                Publish to catalog
+                <Upload className="w-4 h-4 ml-2" />
+              </>
+            )}
+          </Button>
         </div>
+      </CarCard>
     </div>
-  )
+  );
 }
 

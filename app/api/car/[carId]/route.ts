@@ -19,7 +19,7 @@ export async function DELETE(req:Request,{params}:{params:Promise<{carId:string}
         return NextResponse.json(deleteCar);
 
     } catch (error) {
-        console.log("[DELETE CAR ID]",error)
+        console.error("[DELETE CAR ID]",error)
         return new NextResponse("Interal Error",{status:500})
     }
 }
@@ -45,7 +45,7 @@ export async function PATCH(req:Request,{params}:{params:Promise<{carId:string}>
         return NextResponse.json(car);
 
     } catch (error) {
-        console.log("[CAR ID PATCH]",error)
+        console.error("[CAR ID PATCH]",error)
         return new NextResponse("Interal Error",{status:500})
     }
 }
