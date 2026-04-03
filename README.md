@@ -109,15 +109,6 @@ pnpm run dev
 
 ---
 
-## 📈 Roadmap
-
-- [ ]  **IA Recommendation**: Sugerencia de coches basada en el historial del usuario.
-- [ ]  **Multi-idioma**: Implementación de i18n con soporte para Inglés/Español.
-- [x]  **Refactor de GSAP a Framer Motion**: ✅ Completado.
-- [ ]  **Mobile App**: Versión nativa con Expo/React Native.
-
----
-
 <div align="center">
   <h3>Creado por Jonathan Fleitas Pérez</h3>
   <p>Si te gusta este proyecto, ¡dale una ⭐!</p>
